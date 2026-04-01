@@ -12,6 +12,12 @@ class OpenApiSnapshotTest extends KernelTestCase
 {
     private const string SNAPSHOT_PATH = __DIR__.'/expected_openapi.json';
 
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+        restore_exception_handler();
+    }
+
     #[Test]
     public function specMatchesSnapshot(): void
     {
