@@ -1,15 +1,13 @@
 <?php
 
-use OpenSolid\Api\Controller\HelloController;
+declare(strict_types=1);
+
+use OpenSolid\Api\Controller\OpenApiController;
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
 
-/**
- * @link https://symfony.com/doc/current/bundles/best_practices.html#routing
- */
-return static function (RoutingConfigurator $routes): void {
-    $routes
-        ->add('open_hello_controller', '/')
-            ->controller(HelloController::class)
-            ->methods(['GET'])
-    ;
+return function (RoutingConfigurator $routes): void {
+    $routes->add('openapi_docs', '/docs.{format}')
+        ->controller(OpenApiController::class)
+        ->requirements(['format' => 'json|yaml'])
+        ->methods(['GET']);
 };

@@ -1,0 +1,411 @@
+{
+    "openapi": "3.1.0",
+    "info": {
+        "title": "My First API",
+        "description": "My API description",
+        "license": {
+            "name": "MIT",
+            "url": "https://opensource.org/licenses/MIT"
+        },
+        "version": "1.0"
+    },
+    "servers": [
+        {
+            "url": "https://127.0.0.1:8000",
+            "description": "Production server (uses live data)"
+        }
+    ],
+    "paths": {
+        "/products/{id}": {
+            "get": {
+                "tags": [
+                    "Product"
+                ],
+                "summary": "Retrieves a single product by its unique identifier.",
+                "description": "Find a Product",
+                "operationId": "api_find_product",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "The product ID",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        },
+                        "example": "019d0121-5df2-77df-be75-8933613d53ab"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProductView"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Product"
+                ],
+                "summary": "Replaces an existing product or creates it if it does not exist.",
+                "description": "Replace a Product",
+                "operationId": "api_replace_product",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "The product ID",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        },
+                        "example": "019d0121-5df2-77df-be75-8933613d53ab"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ReplaceProductPayload"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProductView"
+                                }
+                            }
+                        }
+                    },
+                    "201": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProductView"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Product"
+                ],
+                "summary": "Deletes a product by its unique identifier.",
+                "description": "Delete a Product",
+                "operationId": "api_delete_product",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "The product ID",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        },
+                        "example": "019d0121-5df2-77df-be75-8933613d53ab"
+                    }
+                ],
+                "responses": {
+                    "204": {}
+                }
+            },
+            "patch": {
+                "tags": [
+                    "Product"
+                ],
+                "summary": "Partially updates an existing product by its unique identifier.",
+                "description": "Update a Product",
+                "operationId": "api_update_product",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "The product ID",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        },
+                        "example": "019d0121-5df2-77df-be75-8933613d53ab"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateProductPayload"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProductView"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/products": {
+            "get": {
+                "tags": [
+                    "Product"
+                ],
+                "summary": "Retrieves a paginated collection of product resources.",
+                "description": "Find Products",
+                "operationId": "api_find_products",
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "Filter by product name",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Page number",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 1,
+                            "minimum": 1
+                        }
+                    },
+                    {
+                        "name": "itemsPerPage",
+                        "in": "query",
+                        "description": "Number of items per page",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 20,
+                            "maximum": 100,
+                            "minimum": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "items": {
+                                            "description": "The list of items",
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/ProductView"
+                                            }
+                                        },
+                                        "totalItems": {
+                                            "description": "The total number of items",
+                                            "type": "integer",
+                                            "example": 1
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Product"
+                ],
+                "summary": "Creates a new product resource.",
+                "description": "Create a Product",
+                "operationId": "api_create_product",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CreateProductPayload"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProductView"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "CreateProductPayload": {
+                "required": [
+                    "name",
+                    "price"
+                ],
+                "properties": {
+                    "id": {
+                        "description": "The product ID",
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "format": "uuid",
+                        "example": "019d0121-5df2-77df-be75-8933613d53ab"
+                    },
+                    "name": {
+                        "description": "The product name",
+                        "type": "string",
+                        "maxLength": 255,
+                        "minLength": 3
+                    },
+                    "price": {
+                        "description": "The product price (in cents)",
+                        "type": "integer",
+                        "example": 100
+                    },
+                    "currency": {
+                        "description": "The currency of the price",
+                        "type": "string",
+                        "example": "USD"
+                    }
+                },
+                "type": "object"
+            },
+            "PriceView": {
+                "required": [
+                    "amount",
+                    "currency"
+                ],
+                "properties": {
+                    "amount": {
+                        "description": "The amount of the price",
+                        "type": "integer",
+                        "example": 100
+                    },
+                    "currency": {
+                        "description": "The currency of the price",
+                        "type": "string",
+                        "example": "USD"
+                    }
+                },
+                "type": "object"
+            },
+            "ProductView": {
+                "required": [
+                    "id",
+                    "name",
+                    "price"
+                ],
+                "properties": {
+                    "id": {
+                        "description": "The unique identifier of the product",
+                        "type": "string",
+                        "format": "uuid",
+                        "example": "019d0121-5df2-77df-be75-8933613d53ab"
+                    },
+                    "name": {
+                        "description": "The name of the product",
+                        "type": "string"
+                    },
+                    "price": {
+                        "$ref": "#/components/schemas/PriceView",
+                        "description": "The price of the product"
+                    }
+                },
+                "type": "object"
+            },
+            "ReplaceProductPayload": {
+                "required": [
+                    "name",
+                    "amount"
+                ],
+                "properties": {
+                    "name": {
+                        "description": "The product name",
+                        "type": "string",
+                        "maxLength": 255,
+                        "minLength": 3
+                    },
+                    "amount": {
+                        "description": "The product price amount (in cents)",
+                        "type": "integer",
+                        "example": 100
+                    },
+                    "currency": {
+                        "description": "The currency of the price",
+                        "type": "string",
+                        "example": "USD"
+                    }
+                },
+                "type": "object"
+            },
+            "UpdateProductPayload": {
+                "properties": {
+                    "name": {
+                        "description": "The product name",
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "maxLength": 255,
+                        "minLength": 3
+                    },
+                    "amount": {
+                        "description": "The product price amount (in cents)",
+                        "type": [
+                            "integer",
+                            "null"
+                        ],
+                        "example": 100
+                    },
+                    "currency": {
+                        "description": "The product price currency code",
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "example": "USD"
+                    }
+                },
+                "type": "object"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Product",
+            "description": "The product resource"
+        }
+    ]
+}
