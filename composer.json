@@ -1,0 +1,24 @@
+{
+    "name": "open-solid/api",
+    "type": "symfony-bundle",
+    "license": "MIT",
+    "description": "An OpenApi Bridge for Symfony",
+    "minimum-stability": "stable",
+    "require": {
+        "php": ">=8.1",
+        "symfony/framework-bundle": "^6.4|^7.0"
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "autoload": {
+        "psr-4": {
+            "OpenSolid\\Api\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "OpenSolid\\Api\\Tests\\": "tests/"
+        }
+    }
+}
