@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace OpenSolid\Api\Tests\Fixtures\App;
 
 use OpenSolid\Api\OpenApi\OpenApiGenerator;
-use OpenSolid\Api\OpenApi\OpenApiGeneratorFactory;
 use OpenSolid\Api\OpenSolidApiBundle;
 use OpenSolid\Api\Tests\Fixtures\App\Model\ProductIdPathParameterSchemaResolver;
 use Psr\Log\NullLogger;
@@ -23,12 +22,12 @@ class TestKernel extends Kernel
         $container->addCompilerPass(new class implements CompilerPassInterface {
             public function process(ContainerBuilder $container): void
             {
-                if ($container->hasDefinition(OpenApiGenerator::class)) {
-                    $container->getDefinition(OpenApiGenerator::class)->setPublic(true);
+                if ($container->hasDefinition('open_solid_api.generator')) {
+                    $container->getDefinition('open_solid_api.generator')->setPublic(true);
                 }
 
-                if ($container->hasDefinition(OpenApiGeneratorFactory::class)) {
-                    $container->getDefinition(OpenApiGeneratorFactory::class)
+                if ($container->hasDefinition('open_solid_api.generator_factory')) {
+                    $container->getDefinition('open_solid_api.generator_factory')
                         ->replaceArgument(0, new Definition(NullLogger::class));
                 }
             }

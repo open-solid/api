@@ -16,24 +16,28 @@ return function (ContainerConfigurator $container): void {
     $services = $container->services();
 
     // OpenApi
-    $services->set(OpenApiGeneratorFactory::class)
+    $services->set('open_solid_api.generator_factory', OpenApiGeneratorFactory::class)
         ->args([
             service('logger'),
             service('type_info.resolver'),
             param('open_api.config'),
             tagged_iterator('open_api.path_parameter_schema_resolver'),
         ]);
+    $services->alias(OpenApiGeneratorFactory::class, 'open_solid_api.generator_factory');
 
-    $services->set(OpenApiGenerator::class)
-        ->factory([service(OpenApiGeneratorFactory::class), '__invoke']);
+    $services->set('open_solid_api.generator', OpenApiGenerator::class)
+        ->factory([service('open_solid_api.generator_factory'), '__invoke']);
+    $services->alias(OpenApiGenerator::class, 'open_solid_api.generator');
 
     // Command
-    $services->set(GenerateOpenApiCommand::class)
-        ->args([service(OpenApiGenerator::class)])
+    $services->set('open_solid_api.command.generate', GenerateOpenApiCommand::class)
+        ->args([service('open_solid_api.generator')])
         ->tag('console.command');
+    $services->alias(GenerateOpenApiCommand::class, 'open_solid_api.command.generate');
 
     // Controller
-    $services->set(OpenApiController::class)
-        ->args([service(OpenApiGenerator::class)])
+    $services->set('open_solid_api.controller.docs', OpenApiController::class)
+        ->args([service('open_solid_api.generator')])
         ->tag('controller.service_arguments');
+    $services->alias(OpenApiController::class, 'open_solid_api.controller.docs');
 };
