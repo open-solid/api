@@ -271,8 +271,7 @@
             "CreateProductPayload": {
                 "required": [
                     "name",
-                    "price",
-                    "currency"
+                    "price"
                 ],
                 "properties": {
                     "id": {
@@ -349,8 +348,7 @@
             "ReplaceProductPayload": {
                 "required": [
                     "name",
-                    "amount",
-                    "currency"
+                    "amount"
                 ],
                 "properties": {
                     "name": {

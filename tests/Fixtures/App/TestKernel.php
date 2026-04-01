@@ -5,12 +5,15 @@ declare(strict_types=1);
 namespace OpenSolid\Api\Tests\Fixtures\App;
 
 use OpenSolid\Api\OpenApi\OpenApiGenerator;
+use OpenSolid\Api\OpenApi\OpenApiGeneratorFactory;
 use OpenSolid\Api\OpenSolidApiBundle;
 use OpenSolid\Api\Tests\Fixtures\App\Model\ProductIdPathParameterSchemaResolver;
+use Psr\Log\NullLogger;
 use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\HttpKernel\Kernel;
 
 class TestKernel extends Kernel
@@ -22,6 +25,11 @@ class TestKernel extends Kernel
             {
                 if ($container->hasDefinition(OpenApiGenerator::class)) {
                     $container->getDefinition(OpenApiGenerator::class)->setPublic(true);
+                }
+
+                if ($container->hasDefinition(OpenApiGeneratorFactory::class)) {
+                    $container->getDefinition(OpenApiGeneratorFactory::class)
+                        ->replaceArgument(0, new Definition(NullLogger::class));
                 }
             }
         });
