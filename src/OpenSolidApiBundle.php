@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace OpenSolid\Api;
 
 use OpenSolid\Api\OpenApi\Resolver\PathParameterSchemaResolver;
+use OpenSolid\CallableInvoker\Decorator\CallableDecoratorInterface;
 use Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
@@ -27,6 +28,10 @@ final class OpenSolidApiBundle extends AbstractBundle
             ->addTag('open_api.path_parameter_schema_resolver');
 
         $container->import('../config/services.php');
+
+        if ($config['decorators'] && interface_exists(CallableDecoratorInterface::class)) {
+            $container->import('../config/decorators.php');
+        }
     }
 
     public function getAlias(): string

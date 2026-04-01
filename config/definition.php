@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use OpenApi\Annotations as OA;
+use OpenSolid\CallableInvoker\Decorator\CallableDecoratorInterface;
 use Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator;
 
 return function (DefinitionConfigurator $definition): void {
@@ -22,6 +23,10 @@ return function (DefinitionConfigurator $definition): void {
             ->end()
             ->booleanNode('validate')
                 ->defaultValue('%kernel.debug%')
+            ->end()
+            ->booleanNode('decorators')
+                ->defaultValue(interface_exists(CallableDecoratorInterface::class))
+                ->info('Enable API controller decorators (requires open-solid/callable-invoker)')
             ->end()
         ->end();
 };
