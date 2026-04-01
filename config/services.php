@@ -53,6 +53,8 @@ return function (ContainerConfigurator $container): void {
         ->tag('callable_invoker.decorator', ['event' => 'kernel.controller']);
 
     $services->set(ApiResponseDecorator::class)
-        ->args([service('json_streamer.stream_writer')])
+        ->args([
+            service('json_streamer.stream_writer')->nullOnInvalid(),
+        ])
         ->tag('callable_invoker.decorator', ['event' => 'kernel.controller', 'priority' => -100]);
 };
