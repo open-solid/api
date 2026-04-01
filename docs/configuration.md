@@ -69,12 +69,13 @@ The bundle provides one route:
 |------|------|---------|-------------|
 | `openapi_docs` | `/docs.{format}` | GET | Serves the OpenAPI spec (`format`: `json` or `yaml`) |
 
-Import it in your routing configuration:
+Import it in your routing configuration with an optional prefix:
 
 ```yaml
 # config/routes/open_solid_api.yaml
 open_solid_api:
     resource: '@OpenSolidApiBundle/config/routes.php'
+    prefix: /api  # optional
 ```
 
 ## Auto-Configuration

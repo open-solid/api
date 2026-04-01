@@ -54,10 +54,19 @@ The bundle will generate an OpenAPI `GET /hello` operation from this class autom
 
 ## View the Spec
 
-The bundle registers a route at `/docs.{format}`. Access your spec at:
+Import the bundle's route in your project to expose the OpenAPI spec over HTTP:
 
-- **JSON**: `http://localhost:8000/docs.json`
-- **YAML**: `http://localhost:8000/docs.yaml`
+```yaml
+# config/routes/open_solid_api.yaml
+open_solid_api:
+    resource: '@OpenSolidApiBundle/config/routes.php'
+    prefix: /api  # optional
+```
+
+Then access your spec at:
+
+- **JSON**: `http://localhost:8000/api/docs.json`
+- **YAML**: `http://localhost:8000/api/docs.yaml`
 
 Or export it to a file:
 
