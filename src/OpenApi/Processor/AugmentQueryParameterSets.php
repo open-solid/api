@@ -66,7 +66,7 @@ final readonly class AugmentQueryParameterSets
                     /** @var OAT\QueryParameter $queryParam */
                     $queryParam = $attributes[0]->newInstance();
                     $queryParam->_context = new Context([
-                        'nested' => false,
+                        'nested' => true,
                         'property' => $property->getName(),
                         'reflector' => $property,
                     ], $operation->_context);

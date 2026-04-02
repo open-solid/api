@@ -39,6 +39,7 @@
                 ],
                 "responses": {
                     "200": {
+                        "description": "",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -81,6 +82,7 @@
                 },
                 "responses": {
                     "200": {
+                        "description": "",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -90,6 +92,7 @@
                         }
                     },
                     "201": {
+                        "description": "",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -121,7 +124,9 @@
                     }
                 ],
                 "responses": {
-                    "204": {}
+                    "204": {
+                        "description": ""
+                    }
                 }
             },
             "patch": {
@@ -156,6 +161,7 @@
                 },
                 "responses": {
                     "200": {
+                        "description": "",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -211,6 +217,7 @@
                 ],
                 "responses": {
                     "200": {
+                        "description": "",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -254,6 +261,7 @@
                 },
                 "responses": {
                     "201": {
+                        "description": "",
                         "content": {
                             "application/json": {
                                 "schema": {

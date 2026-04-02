@@ -105,6 +105,7 @@ final readonly class AugmentOperations
         if ($isVoid) {
             return new OA\Response([
                 'response' => $statusCode,
+                'description' => '',
                 '_context' => $context,
             ]);
         }
@@ -119,6 +120,7 @@ final readonly class AugmentOperations
 
         $response = new OA\Response([
             'response' => $statusCode,
+            'description' => '',
             'content' => [$mediaType],
             '_context' => $context,
         ]);
@@ -158,6 +160,7 @@ final readonly class AugmentOperations
                 ]);
                 $response = new OA\Response([
                     'response' => $statusCode,
+                    'description' => '',
                     'content' => [$mediaType],
                     '_context' => $context,
                 ]);
@@ -165,6 +168,7 @@ final readonly class AugmentOperations
             } else {
                 $response = new OA\Response([
                     'response' => $statusCode,
+                    'description' => '',
                     '_context' => $context,
                 ]);
             }
