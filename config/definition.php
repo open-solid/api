@@ -28,5 +28,14 @@ return function (DefinitionConfigurator $definition): void {
                 ->defaultValue(interface_exists(CallableDecoratorInterface::class))
                 ->info('Enable API controller decorators (requires open-solid/callable-invoker)')
             ->end()
+            ->arrayNode('cache_headers')
+                ->addDefaultsIfNotSet()
+                ->children()
+                    ->arrayNode('vary')
+                        ->scalarPrototype()->end()
+                        ->defaultValue(['Content-Type', 'Authorization', 'Origin'])
+                    ->end()
+                ->end()
+            ->end()
         ->end();
 };

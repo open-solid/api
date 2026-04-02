@@ -22,6 +22,7 @@ final class OpenSolidApiBundle extends AbstractBundle
     {
         $container->parameters()
             ->set('open_api.config', $config)
+            ->set('open_api.cache_headers.vary', $config['cache_headers']['vary'])
         ;
 
         $builder->registerForAutoconfiguration(PathParameterSchemaResolver::class)

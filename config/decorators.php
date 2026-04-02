@@ -6,8 +6,10 @@ use OpenSolid\Api\Controller\Decorator\ApiEarlyResponseDecorator;
 use OpenSolid\Api\Controller\Decorator\ApiGetOrCreateResourceDecorator;
 use OpenSolid\Api\Controller\Decorator\ApiPaginationDecorator;
 use OpenSolid\Api\Controller\Decorator\ApiResponseDecorator;
+use OpenSolid\Api\Controller\Decorator\ApiVaryHeaderDecorator;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 
+use function Symfony\Component\DependencyInjection\Loader\Configurator\param;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\service;
 
 return function (ContainerConfigurator $container): void {
@@ -32,4 +34,11 @@ return function (ContainerConfigurator $container): void {
         ])
         ->tag('callable_invoker.decorator', ['groups' => ['kernel.controller'], 'priority' => -100]);
     $services->alias(ApiResponseDecorator::class, 'open_solid_api.decorator.response');
+
+    $services->set('open_solid_api.decorator.vary_header', ApiVaryHeaderDecorator::class)
+        ->args([
+            param('open_api.cache_headers.vary'),
+        ])
+        ->tag('callable_invoker.decorator', ['groups' => ['kernel.controller'], 'priority' => -200]);
+    $services->alias(ApiVaryHeaderDecorator::class, 'open_solid_api.decorator.vary_header');
 };
