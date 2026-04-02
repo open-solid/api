@@ -26,7 +26,7 @@ final readonly class ApiGetOrCreateResourceDecorator extends AbstractApiDecorato
         return new ResponseOptions(
             response: $response->resource,
             type: $type->getVariableTypes()[0],
-            statusCode: $response->created ? 201 : null,
+            statusCode: $response->created ? 201 : 200,
         );
     }
 }
