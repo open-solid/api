@@ -15,21 +15,21 @@ return function (ContainerConfigurator $container): void {
 
     $services->set('open_solid_api.decorator.early_response', ApiEarlyResponseDecorator::class)
         ->args([service('type_info.resolver')])
-        ->tag('callable_invoker.decorator', ['event' => 'kernel.controller', 'priority' => 100]);
+        ->tag('callable_invoker.decorator', ['groups' => 'kernel.controller', 'priority' => 100]);
     $services->alias(ApiEarlyResponseDecorator::class, 'open_solid_api.decorator.early_response');
 
     $services->set('open_solid_api.decorator.get_or_create_resource', ApiGetOrCreateResourceDecorator::class)
-        ->tag('callable_invoker.decorator', ['event' => 'kernel.controller']);
+        ->tag('callable_invoker.decorator', ['groups' => 'kernel.controller']);
     $services->alias(ApiGetOrCreateResourceDecorator::class, 'open_solid_api.decorator.get_or_create_resource');
 
     $services->set('open_solid_api.decorator.pagination', ApiPaginationDecorator::class)
-        ->tag('callable_invoker.decorator', ['event' => 'kernel.controller']);
+        ->tag('callable_invoker.decorator', ['groups' => 'kernel.controller']);
     $services->alias(ApiPaginationDecorator::class, 'open_solid_api.decorator.pagination');
 
     $services->set('open_solid_api.decorator.response', ApiResponseDecorator::class)
         ->args([
             service('json_streamer.stream_writer')->nullOnInvalid(),
         ])
-        ->tag('callable_invoker.decorator', ['event' => 'kernel.controller', 'priority' => -100]);
+        ->tag('callable_invoker.decorator', ['groups' => 'kernel.controller', 'priority' => -100]);
     $services->alias(ApiResponseDecorator::class, 'open_solid_api.decorator.response');
 };
