@@ -13,6 +13,7 @@ use OpenApi\Attributes as OA;
 )]
 #[OA\License(name: 'MIT', url: 'https://opensource.org/licenses/MIT')]
 #[OA\Server(url: 'https://127.0.0.1:8000', description: 'Production server (uses live data)')]
+#[OA\Tag(name: 'Order', description: 'The order resource')]
 #[OA\Tag(name: 'Product', description: 'The product resource')]
 class OpenApiSpec
 {

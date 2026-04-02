@@ -173,6 +173,124 @@
                 }
             }
         },
+        "/orders": {
+            "get": {
+                "tags": [
+                    "Order"
+                ],
+                "summary": "Retrieves a paginated collection of order resources.",
+                "description": "Find Orders",
+                "operationId": "api_find_orders",
+                "parameters": [
+                    {
+                        "name": "externalId",
+                        "in": "query",
+                        "description": "Filter by external system ID",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "status",
+                        "in": "query",
+                        "description": "Filter by order status",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "currency",
+                        "in": "query",
+                        "description": "Filter by currency code",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Page number",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 1,
+                            "minimum": 1
+                        }
+                    },
+                    {
+                        "name": "itemsPerPage",
+                        "in": "query",
+                        "description": "Number of items per page",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 20,
+                            "maximum": 100,
+                            "minimum": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "items": {
+                                            "description": "The list of items",
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/OrderView"
+                                            }
+                                        },
+                                        "totalItems": {
+                                            "description": "The total number of items",
+                                            "type": "integer",
+                                            "example": 1
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Order"
+                ],
+                "summary": "Creates a new order resource.",
+                "description": "Create an Order",
+                "operationId": "api_create_order",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CreateOrderPayload"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/OrderView"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/products": {
             "get": {
                 "tags": [
@@ -272,10 +390,119 @@
                     }
                 }
             }
+        },
+        "/orders/by-product": {
+            "get": {
+                "tags": [
+                    "Order"
+                ],
+                "summary": "Retrieves orders filtered by product.",
+                "description": "Find Orders by Product",
+                "operationId": "api_find_orders_by_product",
+                "parameters": [
+                    {
+                        "name": "externalId",
+                        "in": "query",
+                        "description": "Filter by external system ID",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "productId",
+                        "in": "query",
+                        "description": "Filter by product ID",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Page number",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 1,
+                            "minimum": 1
+                        }
+                    },
+                    {
+                        "name": "itemsPerPage",
+                        "in": "query",
+                        "description": "Number of items per page",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 20,
+                            "maximum": 100,
+                            "minimum": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "items": {
+                                            "description": "The list of items",
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/OrderView"
+                                            }
+                                        },
+                                        "totalItems": {
+                                            "description": "The total number of items",
+                                            "type": "integer",
+                                            "example": 1
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     },
     "components": {
         "schemas": {
+            "CreateOrderPayload": {
+                "required": [
+                    "externalId",
+                    "total"
+                ],
+                "properties": {
+                    "externalId": {
+                        "description": "The external system ID",
+                        "type": "string"
+                    },
+                    "total": {
+                        "description": "The total amount in cents",
+                        "type": "integer",
+                        "example": 5000,
+                        "exclusiveMinimum": 0
+                    },
+                    "currency": {
+                        "description": "The currency code",
+                        "type": "string",
+                        "example": "USD",
+                        "enum": [
+                            "USD",
+                            "EUR",
+                            "GBP"
+                        ]
+                    }
+                },
+                "type": "object"
+            },
             "CreateProductPayload": {
                 "required": [
                     "name",
@@ -312,6 +539,43 @@
                             "EUR",
                             "GBP"
                         ]
+                    }
+                },
+                "type": "object"
+            },
+            "OrderView": {
+                "required": [
+                    "id",
+                    "externalId",
+                    "status",
+                    "total",
+                    "currency"
+                ],
+                "properties": {
+                    "id": {
+                        "description": "The order ID",
+                        "type": "string",
+                        "format": "uuid",
+                        "example": "019d0121-5df2-77df-be75-8933613d53ab"
+                    },
+                    "externalId": {
+                        "description": "The external system ID",
+                        "type": "string"
+                    },
+                    "status": {
+                        "description": "The order status",
+                        "type": "string",
+                        "example": "pending"
+                    },
+                    "total": {
+                        "description": "The total amount in cents",
+                        "type": "integer",
+                        "example": 5000
+                    },
+                    "currency": {
+                        "description": "The currency code",
+                        "type": "string",
+                        "example": "USD"
                     }
                 },
                 "type": "object"
@@ -418,6 +682,10 @@
         "parameters": {}
     },
     "tags": [
+        {
+            "name": "Order",
+            "description": "The order resource"
+        },
         {
             "name": "Product",
             "description": "The product resource"
