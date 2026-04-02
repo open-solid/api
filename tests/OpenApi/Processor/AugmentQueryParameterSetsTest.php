@@ -97,6 +97,39 @@ class AugmentQueryParameterSetsTest extends TestCase
     }
 
     #[Test]
+    public function itRemovesOriginallyScannedAnnotationsFromAnalysis(): void
+    {
+        $operation = $this->createOperation(ActionWithMapQueryString::class);
+
+        // Simulate swagger-php scanning: add QueryParameter annotations with non-nested context
+        $class = new \ReflectionClass(QueryStringParams::class);
+        foreach ($class->getProperties() as $property) {
+            $attrs = $property->getAttributes(OAT\QueryParameter::class, \ReflectionAttribute::IS_INSTANCEOF);
+            if ($attrs !== []) {
+                $scanned = $attrs[0]->newInstance();
+                $scanned->_context = new Context([
+                    'property' => $property->getName(),
+                    'reflector' => $property,
+                ]);
+                $analysis = new Analysis([$operation, $scanned], new Context());
+            }
+        }
+
+        ($this->processor)($analysis);
+
+        // The originally-scanned (non-nested) QueryParameter annotations should be removed
+        $remaining = [];
+        foreach ($analysis->getAnnotationsOfType(OAT\QueryParameter::class) as $annotation) {
+            $remaining[] = $annotation;
+        }
+
+        // Only the new instances (nested => true) should remain
+        foreach ($remaining as $annotation) {
+            self::assertTrue($annotation->_context->is('nested'), 'Expected all remaining QueryParameter annotations to be nested');
+        }
+    }
+
+    #[Test]
     public function itUsesCustomParameterName(): void
     {
         $operation = $this->createOperation(ActionWithCustomParamName::class);
