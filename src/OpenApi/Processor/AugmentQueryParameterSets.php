@@ -88,7 +88,7 @@ final readonly class AugmentQueryParameterSets
                     }
                     $ref = $annotation->_context->reflector ?? null;
                     if ($ref instanceof \ReflectionProperty && $ref->getDeclaringClass()->getName() === $className) {
-                        $analysis->annotations->detach($annotation);
+                        $analysis->annotations->offsetUnset($annotation);
                     }
                 }
             }
