@@ -78,19 +78,6 @@ final readonly class AugmentQueryParameterSets
                     $operation->parameters[] = $queryParam;
                     $analysis->addAnnotation($queryParam, $queryParam->_context);
                 }
-
-                // Remove originally-scanned QueryParameter annotations for this class
-                // to prevent MergeIntoComponents from promoting them into Components::parameters.
-                // The scanner sets nested=false on these; our new instances above have nested=true.
-                foreach ($analysis->getAnnotationsOfType(OAT\QueryParameter::class) as $annotation) {
-                    if ($annotation->_context->nested) {
-                        continue;
-                    }
-                    $ref = $annotation->_context->reflector ?? null;
-                    if ($ref instanceof \ReflectionProperty && $ref->getDeclaringClass()->getName() === $className) {
-                        $analysis->annotations->offsetUnset($annotation);
-                    }
-                }
             }
         }
     }

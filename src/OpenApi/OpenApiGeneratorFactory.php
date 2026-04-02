@@ -10,6 +10,7 @@ use OpenApi\Processors\AugmentParameters;
 use OpenApi\Processors\AugmentRefs;
 use OpenApi\Processors\AugmentRequestBody;
 use OpenApi\Processors\BuildPaths;
+use OpenApi\Processors\MergeIntoComponents;
 use OpenSolid\Api\OpenApi\Processor\AugmentOperations;
 use OpenSolid\Api\OpenApi\Processor\AugmentQueryParameters;
 use OpenSolid\Api\OpenApi\Processor\AugmentQueryParameterSets;
@@ -18,6 +19,7 @@ use OpenSolid\Api\OpenApi\Processor\AugmentSchemaConstraints;
 use OpenSolid\Api\OpenApi\Processor\AugmentSchemas;
 use OpenSolid\Api\OpenApi\Processor\GenerateOperationsFromApiRoutes;
 use OpenSolid\Api\OpenApi\Processor\MergeMethodAnnotationsIntoOperations;
+use OpenSolid\Api\OpenApi\Processor\RemoveScannedQueryParameters;
 use Symfony\Component\Validator\Constraint;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\TypeInfo\TypeResolver\TypeResolverInterface;
@@ -43,6 +45,7 @@ final readonly class OpenApiGeneratorFactory
                 $pl->insert(new AugmentOperations($this->config['media_type'], $this->typeResolver), BuildPaths::class);
                 $pl->insert(new AugmentRequestBodies($this->config['media_type']), BuildPaths::class);
                 $pl->insert(new AugmentQueryParameterSets(), AugmentParameters::class);
+                $pl->insert(new RemoveScannedQueryParameters(), MergeIntoComponents::class);
                 $pl->insert(new AugmentQueryParameters($this->pathParameterSchemaResolvers), AugmentRefs::class);
                 $pl->insert(new AugmentSchemas(), AugmentRequestBody::class);
                 if (class_exists(Constraint::class)) {

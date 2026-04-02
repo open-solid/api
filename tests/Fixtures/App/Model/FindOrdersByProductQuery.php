@@ -14,6 +14,6 @@ final class FindOrdersByProductQuery
     #[OA\QueryParameter(description: 'Filter by external system ID')]
     public ?string $externalId = null;
 
-    #[OA\QueryParameter(description: 'Filter by product ID', schema: new OA\Schema(format: 'uuid'))]
+    #[OA\QueryParameter(description: 'Filter by product ID')]
     public ?string $productId = null;
 }

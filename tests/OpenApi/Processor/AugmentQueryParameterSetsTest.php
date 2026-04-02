@@ -97,38 +97,6 @@ class AugmentQueryParameterSetsTest extends TestCase
     }
 
     #[Test]
-    public function itRemovesOriginallyScannedAnnotationsFromAnalysis(): void
-    {
-        $operation = $this->createOperation(ActionWithMapQueryString::class);
-
-        // Simulate swagger-php scanning: add QueryParameter annotations with nested=false
-        // (exactly as AttributeAnnotationFactory does for property-level attributes)
-        $scannedAnnotations = [];
-        $class = new \ReflectionClass(QueryStringParams::class);
-        foreach ($class->getProperties() as $property) {
-            $attrs = $property->getAttributes(OAT\QueryParameter::class, \ReflectionAttribute::IS_INSTANCEOF);
-            if ($attrs !== []) {
-                $scanned = $attrs[0]->newInstance();
-                $scanned->_context = new Context([
-                    'nested' => false,
-                    'property' => $property->getName(),
-                    'reflector' => $property,
-                ]);
-                $scannedAnnotations[] = $scanned;
-            }
-        }
-
-        $analysis = new Analysis(array_merge([$operation], $scannedAnnotations), new Context());
-
-        ($this->processor)($analysis);
-
-        // The originally-scanned (nested=false) QueryParameter annotations should be removed
-        foreach ($analysis->getAnnotationsOfType(OAT\QueryParameter::class) as $annotation) {
-            self::assertTrue((bool) $annotation->_context->nested, 'Expected all remaining QueryParameter annotations to have nested=true');
-        }
-    }
-
-    #[Test]
     public function itUsesCustomParameterName(): void
     {
         $operation = $this->createOperation(ActionWithCustomParamName::class);

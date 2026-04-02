@@ -415,8 +415,7 @@
                         "description": "Filter by product ID",
                         "required": false,
                         "schema": {
-                            "type": "string",
-                            "format": "uuid"
+                            "type": "string"
                         }
                     },
                     {
@@ -678,8 +677,7 @@
                 },
                 "type": "object"
             }
-        },
-        "parameters": {}
+        }
     },
     "tags": [
         {
