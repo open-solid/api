@@ -101,31 +101,30 @@ class AugmentQueryParameterSetsTest extends TestCase
     {
         $operation = $this->createOperation(ActionWithMapQueryString::class);
 
-        // Simulate swagger-php scanning: add QueryParameter annotations with non-nested context
+        // Simulate swagger-php scanning: add QueryParameter annotations with nested=false
+        // (exactly as AttributeAnnotationFactory does for property-level attributes)
+        $scannedAnnotations = [];
         $class = new \ReflectionClass(QueryStringParams::class);
         foreach ($class->getProperties() as $property) {
             $attrs = $property->getAttributes(OAT\QueryParameter::class, \ReflectionAttribute::IS_INSTANCEOF);
             if ($attrs !== []) {
                 $scanned = $attrs[0]->newInstance();
                 $scanned->_context = new Context([
+                    'nested' => false,
                     'property' => $property->getName(),
                     'reflector' => $property,
                 ]);
-                $analysis = new Analysis([$operation, $scanned], new Context());
+                $scannedAnnotations[] = $scanned;
             }
         }
 
+        $analysis = new Analysis(array_merge([$operation], $scannedAnnotations), new Context());
+
         ($this->processor)($analysis);
 
-        // The originally-scanned (non-nested) QueryParameter annotations should be removed
-        $remaining = [];
+        // The originally-scanned (nested=false) QueryParameter annotations should be removed
         foreach ($analysis->getAnnotationsOfType(OAT\QueryParameter::class) as $annotation) {
-            $remaining[] = $annotation;
-        }
-
-        // Only the new instances (nested => true) should remain
-        foreach ($remaining as $annotation) {
-            self::assertTrue($annotation->_context->is('nested'), 'Expected all remaining QueryParameter annotations to be nested');
+            self::assertTrue((bool) $annotation->_context->nested, 'Expected all remaining QueryParameter annotations to have nested=true');
         }
     }
 
