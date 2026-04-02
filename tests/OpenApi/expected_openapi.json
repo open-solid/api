@@ -292,12 +292,18 @@
                     "price": {
                         "description": "The product price (in cents)",
                         "type": "integer",
-                        "example": 100
+                        "example": 100,
+                        "exclusiveMinimum": 0
                     },
                     "currency": {
                         "description": "The currency of the price",
                         "type": "string",
-                        "example": "USD"
+                        "example": "USD",
+                        "enum": [
+                            "USD",
+                            "EUR",
+                            "GBP"
+                        ]
                     }
                 },
                 "type": "object"
