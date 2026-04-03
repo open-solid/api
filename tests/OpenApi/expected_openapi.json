@@ -16,163 +16,6 @@
         }
     ],
     "paths": {
-        "/products/{id}": {
-            "get": {
-                "tags": [
-                    "Product"
-                ],
-                "summary": "Retrieves a single product by its unique identifier.",
-                "description": "Find a Product",
-                "operationId": "api_find_product",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "description": "The product ID",
-                        "required": true,
-                        "schema": {
-                            "type": "string",
-                            "format": "uuid"
-                        },
-                        "example": "019d0121-5df2-77df-be75-8933613d53ab"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ProductView"
-                                }
-                            }
-                        }
-                    }
-                }
-            },
-            "put": {
-                "tags": [
-                    "Product"
-                ],
-                "summary": "Replaces an existing product or creates it if it does not exist.",
-                "description": "Replace a Product",
-                "operationId": "api_replace_product",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "description": "The product ID",
-                        "required": true,
-                        "schema": {
-                            "type": "string",
-                            "format": "uuid"
-                        },
-                        "example": "019d0121-5df2-77df-be75-8933613d53ab"
-                    }
-                ],
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/ReplaceProductPayload"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ProductView"
-                                }
-                            }
-                        }
-                    },
-                    "201": {
-                        "description": "",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ProductView"
-                                }
-                            }
-                        }
-                    }
-                }
-            },
-            "delete": {
-                "tags": [
-                    "Product"
-                ],
-                "summary": "Deletes a product by its unique identifier.",
-                "description": "Delete a Product",
-                "operationId": "api_delete_product",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "description": "The product ID",
-                        "required": true,
-                        "schema": {
-                            "type": "string",
-                            "format": "uuid"
-                        },
-                        "example": "019d0121-5df2-77df-be75-8933613d53ab"
-                    }
-                ],
-                "responses": {
-                    "204": {
-                        "description": ""
-                    }
-                }
-            },
-            "patch": {
-                "tags": [
-                    "Product"
-                ],
-                "summary": "Partially updates an existing product by its unique identifier.",
-                "description": "Update a Product",
-                "operationId": "api_update_product",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "description": "The product ID",
-                        "required": true,
-                        "schema": {
-                            "type": "string",
-                            "format": "uuid"
-                        },
-                        "example": "019d0121-5df2-77df-be75-8933613d53ab"
-                    }
-                ],
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/UpdateProductPayload"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ProductView"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
         "/orders": {
             "get": {
                 "tags": [
@@ -463,6 +306,163 @@
                                         }
                                     },
                                     "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/products/{id}": {
+            "get": {
+                "tags": [
+                    "Product"
+                ],
+                "summary": "Retrieves a single product by its unique identifier.",
+                "description": "Find a Product",
+                "operationId": "api_find_product",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "The product ID",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        },
+                        "example": "019d0121-5df2-77df-be75-8933613d53ab"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProductView"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Product"
+                ],
+                "summary": "Replaces an existing product or creates it if it does not exist.",
+                "description": "Replace a Product",
+                "operationId": "api_replace_product",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "The product ID",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        },
+                        "example": "019d0121-5df2-77df-be75-8933613d53ab"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ReplaceProductPayload"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProductView"
+                                }
+                            }
+                        }
+                    },
+                    "201": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProductView"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Product"
+                ],
+                "summary": "Deletes a product by its unique identifier.",
+                "description": "Delete a Product",
+                "operationId": "api_delete_product",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "The product ID",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        },
+                        "example": "019d0121-5df2-77df-be75-8933613d53ab"
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": ""
+                    }
+                }
+            },
+            "patch": {
+                "tags": [
+                    "Product"
+                ],
+                "summary": "Partially updates an existing product by its unique identifier.",
+                "description": "Update a Product",
+                "operationId": "api_update_product",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "The product ID",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        },
+                        "example": "019d0121-5df2-77df-be75-8933613d53ab"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateProductPayload"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProductView"
                                 }
                             }
                         }
