@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace OpenSolid\Api\Controller\Decorator;
 
 use OpenSolid\Api\Controller\Model\Paginator\PageResponse;
-use OpenSolid\Api\Controller\Model\Paginator\Paginator;
 use OpenSolid\Api\Controller\Model\ResponseOptions;
 use OpenSolid\CallableInvoker\CallableMetadata;
 use OpenSolid\CallableInvoker\Decorator\CallableClosure;
+use OpenSolid\Core\Domain\Repository\Paginator;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\TypeInfo\Type;
 

@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace OpenSolid\Api\Tests\Fixtures\App\Controller;
 
-use OpenSolid\Api\Controller\Model\Paginator\Paginator;
 use OpenSolid\Api\Routing\Attribute\GetCollection;
 use OpenSolid\Api\Tests\Fixtures\App\Model\FindProductsQuery;
 use OpenSolid\Api\Tests\Fixtures\App\Model\ProductView;
+use OpenSolid\Core\Domain\Repository\Paginator;
 use Symfony\Component\HttpKernel\Attribute\MapQueryString;
 
 #[GetCollection(

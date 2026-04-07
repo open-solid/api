@@ -7,6 +7,7 @@
     "require": {
         "php": ">=8.4",
         "doctrine/collections": "^2.6|^3.0",
+        "open-solid/core": "^0.3.1",
         "symfony/console": "^7.4|^8.0",
         "symfony/framework-bundle": "^7.4|^8.0",
         "symfony/json-streamer": "^7.4|^8.0",
@@ -16,7 +17,6 @@
     },
     "require-dev": {
         "open-solid/callable-invoker": "^0.2.1",
-        "open-solid/core": "^0.3.0",
         "phpunit/phpunit": "^13.0",
         "symfony/validator": "^8.0"
     },

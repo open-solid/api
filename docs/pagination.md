@@ -5,7 +5,7 @@ The bundle provides built-in support for paginated collection endpoints with a s
 ## The Paginator Interface
 
 ```php
-namespace OpenSolid\Api\Controller\Model\Paginator;
+namespace OpenSolid\Core\Domain\Repository;
 
 /**
  * @template T of object
@@ -24,7 +24,7 @@ interface Paginator extends \Traversable, \Countable
 A concrete implementation that works with Doctrine's `Selectable` interface (e.g. Doctrine Collections, Repositories):
 
 ```php
-use OpenSolid\Api\Controller\Model\Paginator\SelectablePaginator;
+use OpenSolid\Core\Domain\Repository\SelectablePaginator;
 
 $paginator = new SelectablePaginator(
     selectable: $repository, // Any Selectable & Countable
@@ -49,8 +49,9 @@ $paginator = new SelectablePaginator(
 Use `#[GetCollection]` with a `Paginator` return type:
 
 ```php
-use OpenSolid\Api\Controller\Model\Paginator\Paginator;
 use OpenSolid\Api\Routing\Attribute\GetCollection;
+use OpenSolid\Core\Domain\Repository\Paginator;
+use OpenSolid\Core\Domain\Repository\SelectablePaginator;
 use Symfony\Component\HttpKernel\Attribute\MapQueryString;
 
 #[GetCollection(
