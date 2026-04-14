@@ -28,10 +28,6 @@ abstract class ApiRoute extends Route
         public array $tags = [],
         public bool $deprecated = false,
     ) {
-        if (null === $statusCode && $this instanceof Post) {
-            $statusCode = 201;
-        }
-
         parent::__construct(
             path: $path,
             name: $name,
@@ -39,6 +35,7 @@ abstract class ApiRoute extends Route
             options: $options,
             defaults: $defaults + array_filter([
                 '_api_controller' => true,
+                '_api_route_class' => $this::class,
                 '_api_status_code' => $statusCode,
             ], fn ($v) => null !== $v),
             host: $host,

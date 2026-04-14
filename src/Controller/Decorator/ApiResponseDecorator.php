@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace OpenSolid\Api\Controller\Decorator;
 
 use OpenSolid\Api\Controller\Model\ResponseOptions;
+use OpenSolid\Api\Routing\Attribute\Delete;
+use OpenSolid\Api\Routing\Attribute\Post;
 use OpenSolid\CallableInvoker\CallableMetadata;
 use OpenSolid\CallableInvoker\Decorator\CallableClosure;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -39,10 +41,15 @@ final readonly class ApiResponseDecorator extends AbstractApiDecorator
         $request = $metadata->context['request'];
         /** @var Type $returnType */
         $type ??= $metadata->getAttribute('return_type');
+        $statusCode ??= $request->attributes->getInt('_api_status_code', match ($request->attributes->getInt('_api_route_class')) {
+            Post::class => 201,
+            Delete::class => 204,
+            default => 200,
+        });
 
         return new StreamedResponse(
             callbackOrChunks: $this->jsonStreamWriter->write($response, $type),
-            status: $statusCode ?? $request->attributes->getInt('_api_status_code', 200),
+            status: $statusCode,
             headers: $headers ?? ['Content-Type' => 'application/json'],
         );
     }
