@@ -25,7 +25,10 @@ final readonly class ApiEarlyResponseDecorator extends AbstractApiDecorator
         }
 
         if (null === $response) {
-            return new JsonResponse(null, 204);
+            $request = $metadata->context['request'];
+            $statusCode = $request->attributes->getInt('_api_status_code') ?: 204;
+
+            return new JsonResponse(null, $statusCode);
         }
 
         $metadata->setAttribute('return_type', $this->typeResolver->resolve($metadata->function));

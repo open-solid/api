@@ -10,6 +10,7 @@ use OpenSolid\CallableInvoker\Decorator\CallableClosure;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\TypeInfo\Type;
 use Symfony\Component\TypeInfo\TypeResolver\TypeResolverInterface;
 
@@ -42,6 +43,19 @@ class ApiEarlyResponseDecoratorTest extends TestCase
     }
 
     #[Test]
+    public function itRespectsExplicitStatusCodeForNullResponse(): void
+    {
+        $decorator = new ApiEarlyResponseDecorator($this->createStub(TypeResolverInterface::class));
+        $callable = new CallableClosure(static fn () => null, []);
+        $metadata = $this->createMetadata(statusCode: 202);
+
+        $result = $decorator->decorate($callable, $metadata);
+
+        self::assertInstanceOf(JsonResponse::class, $result);
+        self::assertSame(202, $result->getStatusCode());
+    }
+
+    #[Test]
     public function itResolvesReturnTypeAndPassesResponseThrough(): void
     {
         $typeResolver = $this->createMock(TypeResolverInterface::class);
@@ -61,11 +75,16 @@ class ApiEarlyResponseDecoratorTest extends TestCase
         self::assertEquals(Type::object(\stdClass::class), $metadata->getAttribute('return_type'));
     }
 
-    private function createMetadata(): CallableMetadata
+    private function createMetadata(?int $statusCode = null): CallableMetadata
     {
+        $request = new Request();
+        if (null !== $statusCode) {
+            $request->attributes->set('_api_status_code', $statusCode);
+        }
+
         return new CallableMetadata(
             new \ReflectionFunction(static fn () => null),
-            [],
+            ['request' => $request],
             [],
         );
     }

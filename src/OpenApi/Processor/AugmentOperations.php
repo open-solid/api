@@ -10,6 +10,7 @@ use OpenApi\Context;
 use OpenApi\Generator;
 use OpenSolid\Api\OpenApi\Schema\PaginatorSchema;
 use OpenSolid\Api\Routing\Attribute\ApiRoute;
+use OpenSolid\Api\Routing\Attribute\Post;
 use OpenSolid\Core\Domain\Model\GetOrCreateResource;
 use OpenSolid\Core\Domain\Repository\Paginator;
 use Symfony\Component\HttpFoundation\Response;
@@ -52,8 +53,14 @@ final readonly class AugmentOperations
             }
 
             $method = $class->getMethod('__invoke');
-            $statusCode = $route->defaults['_api_status_code'] ?? 200;
             $returnType = $method->getReturnType();
+            $isVoid = null === $returnType || ($returnType instanceof \ReflectionNamedType && 'void' === $returnType->getName());
+            $defaultStatusCode = match (true) {
+                $isVoid => 204,
+                $route instanceof Post => 201,
+                default => 200,
+            };
+            $statusCode = $route->defaults['_api_status_code'] ?? $defaultStatusCode;
 
             if ($returnType instanceof \ReflectionNamedType && is_a($returnType->getName(), Response::class, true)) {
                 continue;
@@ -99,8 +106,7 @@ final readonly class AugmentOperations
 
     private function createResponse(\ReflectionMethod $reflector, ?\ReflectionType $returnType, int $statusCode, Context $context, Analysis $analysis, bool $paginationEnabled): OA\Response
     {
-        $isVoid = null === $returnType
-            || ($returnType instanceof \ReflectionNamedType && 'void' === $returnType->getName());
+        $isVoid = null === $returnType || ($returnType instanceof \ReflectionNamedType && 'void' === $returnType->getName());
 
         if ($isVoid) {
             return new OA\Response([

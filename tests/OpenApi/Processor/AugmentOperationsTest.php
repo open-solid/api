@@ -63,6 +63,36 @@ class AugmentOperationsTest extends TestCase
     }
 
     #[Test]
+    public function itInfersStatusCode204ForVoidReturnTypeRegardlessOfMethod(): void
+    {
+        $operation = $this->createOperation('put', ActionWithVoidPut::class);
+
+        $this->process($operation);
+
+        self::assertIsArray($operation->responses);
+        self::assertCount(1, $operation->responses);
+
+        $response = $operation->responses[0];
+        self::assertSame(204, $response->response);
+        self::assertTrue(Generator::isDefault($response->content));
+    }
+
+    #[Test]
+    public function itRespectsExplicitStatusCodeForVoidReturnType(): void
+    {
+        $operation = $this->createOperation('delete', ActionWithVoidAndExplicitStatusCode::class);
+
+        $this->process($operation);
+
+        self::assertIsArray($operation->responses);
+        self::assertCount(1, $operation->responses);
+
+        $response = $operation->responses[0];
+        self::assertSame(202, $response->response);
+        self::assertTrue(Generator::isDefault($response->content));
+    }
+
+    #[Test]
     public function itInfersStatusCode201ForPost(): void
     {
         $operation = $this->createOperation('post', ActionWithPost::class);
@@ -221,6 +251,22 @@ class ActionWithGetOrCreate
     public function __invoke(): GetOrCreateResource
     {
         return GetOrCreateResource::existing(new \stdClass());
+    }
+}
+
+#[Put(path: '/items/{id}', name: 'api_void_put_item')]
+class ActionWithVoidPut
+{
+    public function __invoke(): void
+    {
+    }
+}
+
+#[Delete(path: '/items/{id}', name: 'api_void_explicit_status', statusCode: 202)]
+class ActionWithVoidAndExplicitStatusCode
+{
+    public function __invoke(): void
+    {
     }
 }
 
