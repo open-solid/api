@@ -41,7 +41,7 @@ final readonly class ApiResponseDecorator extends AbstractApiDecorator
         $request = $metadata->context['request'];
         /** @var Type $returnType */
         $type ??= $metadata->getAttribute('return_type');
-        $statusCode ??= $request->attributes->getInt('_api_status_code', match ($request->attributes->getInt('_api_route_class')) {
+        $statusCode ??= $request->attributes->getInt('_api_status_code', match ($request->attributes->getString('_api_route_class')) {
             Post::class => 201,
             Delete::class => 204,
             default => 200,

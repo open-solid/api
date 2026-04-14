@@ -37,7 +37,7 @@ abstract class ApiRoute extends Route
                 '_api_controller' => true,
                 '_api_route_class' => $this::class,
                 '_api_status_code' => $statusCode,
-            ], fn ($v) => null !== $v),
+            ], fn (mixed $v) => null !== $v),
             host: $host,
             methods: [static::getMethod()],
             schemes: $schemes,
